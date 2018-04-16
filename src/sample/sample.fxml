@@ -1,0 +1,21 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <GridPane prefHeight="300">
+        <Button fx:id="btn_chooseFile" text="Click Me" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <ImageView fx:id="imageview" GridPane.columnIndex="0" GridPane.rowIndex="1" fitWidth="300">
+        </ImageView>
+        </GridPane>
+    </top>
+    <bottom>
+        <GridPane fx:id="gridpane2" prefHeight="300">
+            <ImageView fx:id="imageview2" GridPane.columnIndex="0" GridPane.rowIndex="0" fitWidth="300"/>
+        </GridPane>
+    </bottom>
+</BorderPane>
