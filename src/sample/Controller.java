@@ -5,13 +5,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
@@ -25,20 +23,19 @@ public class Controller {
     @FXML
     HBox horizontal;
     @FXML
-    GridPane gridpane2;
-    private Image image01;
-    @FXML
-    ImageView imageview2;
-    private File selected = null;
-    Group agroup = new Group();
+    HBox horiz_2;
     @FXML
     BorderPane bpane;
+
+    private File selected = null;
 
     public void initialize() {
 
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose an image...");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images","*.png","*.gif","*.jpg"));
+
+
 
         EventHandler<MouseEvent> anEvent = new EventHandler<MouseEvent>() {
             @Override
@@ -48,11 +45,10 @@ public class Controller {
                 ImageView bb = (ImageView) event.getSource();
                 Image img = bb.getImage();
                 Dragboard dragboard = bb.startDragAndDrop(TransferMode.MOVE);
-
+                ClipboardContent cbc = new ClipboardContent();
+                cbc.putImage(img);
                 dragboard.setDragView(img);
-                ClipboardContent clipboardContent = new ClipboardContent();
-                clipboardContent.putImage(img);
-                dragboard.setContent(clipboardContent);
+                dragboard.setContent(cbc);
                 event.consume();
             }
         };
@@ -62,6 +58,9 @@ public class Controller {
             public void handle(ActionEvent event) {
 
                 selected = fc.showOpenDialog(new TempWindow());
+
+                if (selected == null) return;
+
                 Image image01 = new Image(selected.toURI().toString());
                 ImageView animageview = new ImageView();
                 animageview.setImage(image01);
@@ -74,27 +73,23 @@ public class Controller {
             }
         });
 
-        agroup.getChildren().add(horizontal);
-        bpane.getChildren().add(agroup);
-
-
-        gridpane2.setOnDragEntered(new EventHandler<DragEvent>() {
+        bpane.setOnDragEntered(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
-
-                System.out.println("entereD?");
-
+                event.acceptTransferModes(TransferMode.MOVE);
                 Dragboard db = event.getDragboard();
-                Image anotherImage;
+                Image img = new Image(db.getUrl());
 
-                if (db.hasUrl()) {
+                ImageView newImgView = new ImageView();
+                newImgView.setImage(img);
+                newImgView.setPreserveRatio(true);
+                newImgView.setFitWidth(200);
 
-                    anotherImage = new Image(db.getUrl());
-                    imageview2.setPreserveRatio(true);
-                    imageview2.setImage(anotherImage);
-                }
+                horiz_2.getChildren().add(newImgView);
                 event.consume();
             }
         });
+
     }
+
 }
